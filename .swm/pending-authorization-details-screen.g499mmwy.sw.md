@@ -1,25 +1,31 @@
 ---
 title: Pending Authorization Details Screen
 ---
-The Pending Authorization Details screen provides a detailed view of a single credit card authorization, including transaction, merchant, and fraud information. It is used by operators to review, mark, or remove fraud status, and navigate through pending authorizations.
+The Pending Authorization Details screen provides a detailed, read-only view of a specific credit card authorization, including transaction, merchant, and fraud information, to support review and fraud management actions.
 
 ## Screen Preview
 
 ```
 Tran: CPVD              AWS Mainframe Modernization          Date: mm/dd/yy
-Prog: COPAUS1C                    CardDemo                   Time: hh:mm:ss
+Prog: COPAUS1C                   CardDemo                   Time: hh:mm:ss
 
                            View Authorization Details
 
-  Card #: ________________      Auth Date: __________  Auth Time: __________
-  Auth Resp: _   Resp Reason: ____________________   Auth Code: ______
-  Amount: ____________   POS Entry Mode: ____   Source   : __________
-  MCC Code: ____   Card Exp. Date: _____   Auth Type: ______________
-  Tran Id: ________________   Match Status: _   Fraud Status: __________
+ Card #: ________________      Auth Date: __________  Auth Time: __________
 
-  Merchant Details --------------------------------------------------------
-  Name: ___________________________   Merchant ID: ________________
-  City: ___________________________   State: __   Zip: __________
+ Auth Resp: _   Resp Reason: ____________________   Auth Code: ______
+
+ Amount: ____________   POS Entry Mode: ____   Source   : __________
+
+ MCC Code: ____   Card Exp. Date: _____   Auth Type: ______________
+
+ Tran Id: ________________   Match Status: _   Fraud Status: __________
+
+ Merchant Details ------------------------------------------------------
+
+ Name: ___________________________   Merchant ID: ________________
+
+ City: ___________________________   State: __   Zip: __________
 
 
 [Error/Status Message Area]
@@ -31,34 +37,34 @@ Prog: COPAUS1C                    CardDemo                   Time: hh:mm:ss
 
 ### Transaction ID (Tran:)
 
-- Fixed label. Value is always 'CPVD' as set in the COBOL variable WS-CICS-TRANID.
+- Fixed label. Value is always 'CPVD' as set by WS-CICS-TRANID.
 - Not editable by the user.
 
 ### Program Name (Prog:)
 
-- Fixed label. Value is always 'COPAUS1C' as set in the COBOL variable WS-PGM-AUTH-DTL.
+- Fixed label. Value is always 'COPAUS1C' as set by WS-PGM-AUTH-DTL.
 - Not editable by the user.
 
 ### Title 1 (AWS Mainframe Modernization)
 
-- Fixed label. Value is always 'AWS Mainframe Modernization' as set in CCDA-TITLE01.
+- Fixed label. Value is always 'AWS Mainframe Modernization' as set by CCDA-TITLE01.
 - Not editable by the user.
 
 ### Title 2 (CardDemo)
 
-- Fixed label. Value is always 'CardDemo' as set in CCDA-TITLE02.
+- Fixed label. Value is always 'CardDemo' as set by CCDA-TITLE02.
 - Not editable by the user.
 
 ### Date (Date:)
 
-- Displays the current date in mm/dd/yy format.
-- Populated at runtime using the system date.
+- Format: mm/dd/yy
+- Populated from current date at runtime.
 - Not editable by the user.
 
 ### Time (Time:)
 
-- Displays the current time in hh:mm:ss format.
-- Populated at runtime using the system time.
+- Format: hh:mm:ss
+- Populated from current time at runtime.
 - Not editable by the user.
 
 ### View Authorization Details (Screen Title)
@@ -67,131 +73,134 @@ Prog: COPAUS1C                    CardDemo                   Time: hh:mm:ss
 
 ### Card Number (Card #:)
 
-- 16-character field.
-- Populated from PA-CARD-NUM in the IMS segment.
+- Length: 16 characters
+- Populated from PA-CARD-NUM
 - Not editable by the user.
 
 ### Authorization Date (Auth Date:)
 
-- 10-character field (mm/dd/yy).
-- Populated from PA-AUTH-ORIG-DATE, formatted in COBOL logic.
+- Length: 10 characters
+- Format: mm/dd/yy
+- Populated from PA-AUTH-ORIG-DATE, formatted as mm/dd/yy
 - Not editable by the user.
 
 ### Authorization Time (Auth Time:)
 
-- 10-character field (hh:mm:ss).
-- Populated from PA-AUTH-ORIG-TIME, formatted in COBOL logic.
+- Length: 10 characters
+- Format: hh:mm:ss
+- Populated from PA-AUTH-ORIG-TIME, formatted as hh:mm:ss
 - Not editable by the user.
 
 ### Authorization Response (Auth Resp:)
 
-- 1-character field.
-- 'A' for approved (PA-AUTH-RESP-CODE = '00'), 'D' for declined (otherwise).
-- Color changes: green for approved, red for declined.
+- Length: 1 character
+- Value is 'A' for approved (PA-AUTH-RESP-CODE = '00'), 'D' for declined (otherwise)
 - Not editable by the user.
 
 ### Response Reason (Resp Reason:)
 
-- 20-character field.
-- Populated by matching PA-AUTH-RESP-REASON to a lookup table in COBOL (WS-DECLINE-REASON-TAB).
-- Format: code-description (e.g., '3100-INVALID CARD').
+- Length: 20 characters
+- Populated by matching PA-AUTH-RESP-REASON to a code/description table
+- Format: '####-Description' (e.g., '3100-INVALID CARD')
 - Not editable by the user.
 
 ### Authorization Code (Auth Code:)
 
-- 6-character field.
-- Populated from PA-PROCESSING-CODE.
+- Length: 6 characters
+- Populated from PA-PROCESSING-CODE
 - Not editable by the user.
 
 ### Amount (Amount:)
 
-- 12-character field, formatted as -zzzzzzz9.99.
-- Populated from PA-APPROVED-AMT.
+- Length: 12 characters
+- Populated from PA-APPROVED-AMT, formatted as -zzzzzzz9.99
 - Not editable by the user.
 
-### POS Entry Mode
+### POS Entry Mode (POS Entry Mode:)
 
-- 4-character field.
-- Populated from PA-POS-ENTRY-MODE.
+- Length: 4 characters
+- Populated from PA-POS-ENTRY-MODE
 - Not editable by the user.
 
-### Source
+### Source (Source   :)
 
-- 10-character field.
-- Populated from PA-MESSAGE-SOURCE.
+- Length: 10 characters
+- Populated from PA-MESSAGE-SOURCE
 - Not editable by the user.
 
-### MCC Code
+### MCC Code (MCC Code:)
 
-- 4-character field.
-- Populated from PA-MERCHANT-CATAGORY-CODE.
+- Length: 4 characters
+- Populated from PA-MERCHANT-CATAGORY-CODE
 - Not editable by the user.
 
 ### Card Expiry Date (Card Exp. Date:)
 
-- 5-character field (mm/yy).
-- Populated from PA-CARD-EXPIRY-DATE, formatted in COBOL logic.
+- Length: 5 characters
+- Format: mm/yy
+- Populated from PA-CARD-EXPIRY-DATE, formatted as mm/yy
 - Not editable by the user.
 
 ### Authorization Type (Auth Type:)
 
-- 14-character field.
-- Populated from PA-AUTH-TYPE.
+- Length: 14 characters
+- Populated from PA-AUTH-TYPE
 - Not editable by the user.
 
 ### Transaction ID (Tran Id:)
 
-- 15-character field.
-- Populated from PA-TRANSACTION-ID.
+- Length: 15 characters
+- Populated from PA-TRANSACTION-ID
 - Not editable by the user.
 
-### Match Status
+### Match Status (Match Status:)
 
-- 1-character field.
-- Populated from PA-MATCH-STATUS.
-- Values: 'P' (Pending), 'D' (Declined), 'E' (Pending Expired), 'M' (Matched).
+- Length: 1 character
+- Populated from PA-MATCH-STATUS
+- Values: 'P' (Pending), 'D' (Declined), 'E' (Pending Expired), 'M' (Matched)
 - Not editable by the user.
 
-### Fraud Status
+### Fraud Status (Fraud Status:)
 
-- 10-character field.
-- If PA-FRAUD-CONFIRMED or PA-FRAUD-REMOVED, displays the fraud flag, a dash, and the fraud report date (e.g., 'F-20230719'). Otherwise, displays '-'.
+- Length: 10 characters
+- Populated from PA-AUTH-FRAUD and PA-FRAUD-RPT-DATE
+- Format: 'F-YYYYMMDD' for confirmed fraud, 'R-YYYYMMDD' for removed fraud, '-' otherwise
 - Not editable by the user.
 
 ### Merchant Name (Name:)
 
-- 25-character field.
-- Populated from PA-MERCHANT-NAME.
+- Length: 25 characters
+- Populated from PA-MERCHANT-NAME
 - Not editable by the user.
 
-### Merchant ID
+### Merchant ID (Merchant ID:)
 
-- 15-character field.
-- Populated from PA-MERCHANT-ID.
+- Length: 15 characters
+- Populated from PA-MERCHANT-ID
 - Not editable by the user.
 
 ### Merchant City (City:)
 
-- 25-character field.
-- Populated from PA-MERCHANT-CITY.
+- Length: 25 characters
+- Populated from PA-MERCHANT-CITY
 - Not editable by the user.
 
 ### Merchant State (State:)
 
-- 2-character field.
-- Populated from PA-MERCHANT-STATE.
+- Length: 2 characters
+- Populated from PA-MERCHANT-STATE
 - Not editable by the user.
 
 ### Merchant Zip (Zip:)
 
-- 10-character field.
-- Populated from PA-MERCHANT-ZIP.
+- Length: 10 characters
+- Populated from PA-MERCHANT-ZIP
 - Not editable by the user.
 
 ### Error/Status Message Area
 
-- 78-character field at the bottom of the screen.
-- Populated with error or status messages from the COBOL logic (e.g., invalid key, system errors, fraud tagging status).
+- Length: 78 characters
+- Populated with status or error messages (e.g., invalid key, system errors, fraud marking status)
 - Not editable by the user.
 
 &nbsp;

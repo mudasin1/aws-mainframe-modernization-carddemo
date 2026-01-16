@@ -1,19 +1,19 @@
 ---
 title: Add User Screen (COUSR1A)
 ---
-The Add User screen (COUSR1A) allows administrators to create new user accounts by entering personal and security details. It validates all required fields and provides feedback for errors or successful operations.
+The Add User screen (COUSR1A) allows administrators to create new user accounts by entering required personal and security information. It validates all fields and provides feedback for errors or successful creation, supporting both regular and admin user types.
 
 ## Screen Preview
 
 ```
-Tran: CU01            AWS Mainframe Modernization           Date: mm/dd/yy
-Prog: COUSR01C                      CardDemo                Time: hh:mm:ss
+Tran: CU01              AWS Mainframe Modernization          Date: mm/dd/yy
+Prog: COUSR01C                         CardDemo                   Time: hh:mm:ss
 
                                    Add User
 
-      First Name: ____________________      Last Name: ____________________
+      First Name: ____________________    Last Name: ____________________
 
-      User ID: ________   (8 Char)          Password: ________   (8 Char)
+      User ID: ________ (8 Char)         Password: ________ (8 Char)
 
       User Type: _ (A=Admin, U=User)
 
@@ -27,49 +27,95 @@ ENTER=Add User  F3=Back  F4=Clear  F12=Exit
 
 ## Fields
 
-### First Name (FNAME)
+### Transaction ID (Tran:)
 
-- Input field, length: 20 characters
-- Required field; cannot be empty (validated in COBOL)
+- Fixed value: 'CU01' (from WS-TRANID)
+- Displayed at the top left of the screen
+- Not editable by the user.
+
+### Program Name (Prog:)
+
+- Fixed value: 'COUSR01C' (from WS-PGMNAME)
+- Displayed at the top left, second row
+- Not editable by the user.
+
+### Date (Date:)
+
+- Format: mm/dd/yy
+- Populated dynamically from the system date (WS-CURDATE-MM-DD-YY)
+- Not editable by the user.
+
+### Time (Time:)
+
+- Format: hh:mm:ss
+- Populated dynamically from the system time (WS-CURTIME-HH-MM-SS)
+- Not editable by the user.
+
+### Title (AWS Mainframe Modernization / CardDemo)
+
+- Fixed titles from CCDA-TITLE01 and CCDA-TITLE02
+- Not editable by the user.
+
+### Add User (Screen Section Title)
+
+- Fixed label 'Add User' centered on the screen
+- Not editable by the user.
+
+### First Name (First Name:)
+
+- Input field, 20 characters max
+- Required field: cannot be empty (validated in COBOL)
 - Underlined, green color
-- No explicit format restrictions beyond non-empty
+- Cursor starts here on new screen
+- If empty, error message is shown and cursor returns here.
 
-### Last Name (LNAME)
+### Last Name (Last Name:)
 
-- Input field, length: 20 characters
-- Required field; cannot be empty (validated in COBOL)
+- Input field, 20 characters max
+- Required field: cannot be empty (validated in COBOL)
 - Underlined, green color
-- No explicit format restrictions beyond non-empty
+- If empty, error message is shown and cursor returns here.
 
-### User ID (USERID)
+### User ID (User ID:)
 
-- Input field, length: 8 characters
-- Required field; cannot be empty (validated in COBOL)
+- Input field, 8 characters max
+- Required field: cannot be empty (validated in COBOL)
 - Underlined, green color
-- Must be unique (duplicate check performed when writing to file)
-- No explicit format restrictions beyond non-empty
+- If empty, error message is shown and cursor returns here
+- If duplicate, error message is shown and cursor returns here.
 
-### Password (PASSWD)
+### Password (Password:)
 
-- Input field, length: 8 characters
-- Required field; cannot be empty (validated in COBOL)
-- Underlined, green color, dark attribute (DRK)
-- No explicit format restrictions beyond non-empty
+- Input field, 8 characters max
+- Required field: cannot be empty (validated in COBOL)
+- Underlined, green color, dark attribute (input is masked)
+- If empty, error message is shown and cursor returns here.
 
-### User Type (USRTYPE)
+### User Type (User Type:)
 
-- Input field, length: 1 character
-- Required field; cannot be empty (validated in COBOL)
+- Input field, 1 character
+- Required field: cannot be empty (validated in COBOL)
+- Accepts only 'A' (Admin) or 'U' (User) (hint shown on screen)
 - Underlined, green color
-- Must be 'A' for Admin or 'U' for User (validated by context)
-- No other values accepted
+- If empty, error message is shown and cursor returns here.
 
-### Error/Status Message Area (ERRMSG)
+### Error/Status Message Area (\[Error/Status Message Area\])
 
-- Output field, length: 78 characters
+- 78-character area at the bottom of the screen
 - Displays validation errors, status, or success messages
 - Color: Red for errors, Green for success
-- Content is set dynamically by the program
+- Populated by WS-MESSAGE in COBOL
+- Not editable by the user.
+
+### Function Key Instructions (ENTER=Add User  F3=Back  F4=Clear  F12=Exit)
+
+- Fixed instruction line at the bottom
+- Not editable by the user.
+- Explains available function keys:
+  - ENTER: Add User
+  - F3: Back
+  - F4: Clear
+  - F12: Exit
 
 &nbsp;
 
